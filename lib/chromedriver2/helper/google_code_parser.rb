@@ -5,6 +5,7 @@ module Chromedriver
   class Helper
     class GoogleCodeParser
       BUCKET_URL = 'http://chromedriver.storage.googleapis.com'
+      VERSION_MATCH = /\d+\.(\d+)\//.freeze
 
       attr_reader :source, :platform
 
@@ -17,7 +18,7 @@ module Chromedriver
         doc = Nokogiri::XML.parse(source)
         items = doc.css("Contents Key").collect {|k| k.text }
         items.reject! {|k| !(/chromedriver_#{platform}/===k) }
-        items.sort! { |k1, k2| k1.match(/\d+\.(\d+)\//)[1].to_i <=> k2.match(/\d+\.(\d+)\//)[1].to_i }
+        items.sort! { |k1, k2| k1.match(VERSION_MATCH)[1].to_i <=> k2.match(VERSION_MATCH)[1].to_i }
         items.map {|k| "#{BUCKET_URL}/#{k}"}
       end
 
