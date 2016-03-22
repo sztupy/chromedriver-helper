@@ -23,4 +23,3 @@ describe Chromedriver::Helper::GoogleCodeParser do
     end
   end
 end
-
